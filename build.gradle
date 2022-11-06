@@ -1,5 +1,5 @@
 plugins {
-    id("groovy") 
+    id("groovy")
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "3.6.3"
     id("io.micronaut.test-resources") version "3.6.3"
@@ -13,21 +13,39 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+
+    // core
+    implementation("jakarta.annotation:jakarta.annotation-api")
+
+    // http
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-jackson-databind")
-    implementation("io.micronaut.flyway:micronaut-flyway")
-    implementation("io.micronaut.kafka:micronaut-kafka")
-    implementation("io.micronaut.security:micronaut-security")
-    implementation("io.micronaut.security:micronaut-security-jwt")
-    implementation("io.micronaut.sql:micronaut-hibernate-jpa")
-    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
-    implementation("jakarta.annotation:jakarta.annotation-api")
-    runtimeOnly("ch.qos.logback:logback-classic")
-    runtimeOnly("org.postgresql:postgresql")
     implementation("io.micronaut:micronaut-validation")
 
+    // jpa
+    implementation('io.micronaut.data:micronaut-data-hibernate-jpa')
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+
+    // security
+    implementation("io.micronaut.security:micronaut-security")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+
+    // flyway
+    implementation("io.micronaut.flyway:micronaut-flyway")
+
+    // kafka
+    implementation("io.micronaut.kafka:micronaut-kafka")
+
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.postgresql:postgresql")
+
+    compileOnly("org.projectlombok:lombok")
+
+    // data faker
+    implementation 'com.github.javafaker:javafaker:1.0.2'
 }
 
 

@@ -12,12 +12,26 @@ micronaut:
 
 datasources:
   default:
-    driverClassName: org.postgresql.Driver
-    db-type: postgres
+    url: ${PG_JDBC_URL:`jdbc:postgresql://127.0.0.1:5432/ldi-flight-booker`}
+    username: ${PG_USERNAME:postgres}
+    password: ${PG_PASSWORD:secret}
+    driver-class-name: org.postgresql.Driver
+    schema-generator: NONE
+    dialect: POSTGRES
+
+jpa:
+  default:
+    reactive: false
+    entity-scan:
+      packages: com.maciezie.ldi.flights.domain
+    properties:
+      hibernate:
+        show_sql: false
 
 netty:
   default:
     allocator:
       max-order: 3
 
-jpa.default.properties.hibernate.hbm2ddl.auto: none
+# validate | update | create | create-drop | none
+jpa.default.properties.hibernate.hbm2ddl.auto: create
