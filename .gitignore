@@ -1,0 +1,13 @@
+.project
+target/
+build/
+.gradle
+.settings
+.classpath
+*.iml
+.idea
+.DS_Store
+**/docker.info
+generated-sources
+generated-src
+dist/

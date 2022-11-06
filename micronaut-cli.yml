@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.maciezie.ldi
+testFramework: spock
+sourceLanguage: java
+buildTool: gradle
+features: [annotation-api, app-name, flyway, gradle, hibernate-jpa, http-client, jackson-databind, java, java-application, jdbc-hikari, kafka, logback, micronaut-build, netty-server, postgres, readme, security, security-annotations, security-jwt, shade, spock, test-resources, yaml]
