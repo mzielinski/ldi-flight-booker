@@ -6,7 +6,6 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.IntStream;
@@ -21,11 +20,6 @@ public class FlightsFaker {
 
     public FlightsFaker(FlightsRepository repository) {
         this.repository = repository;
-    }
-
-    @PostConstruct
-    public void initialize() {
-        initializeWith(10);
     }
 
     public void initializeWith(int size) {

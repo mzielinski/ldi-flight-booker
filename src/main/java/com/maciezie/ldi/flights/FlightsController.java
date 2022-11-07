@@ -18,16 +18,12 @@ public class FlightsController {
 
     private final FlightsRepository flightsRepository;
 
-    public FlightsController(FlightsRepository flightsRepository, FlightsFaker flightsFaker) {
+    public FlightsController(FlightsRepository flightsRepository) {
         this.flightsRepository = flightsRepository;
-
-        // init database with fake data
-        flightsFaker.initialize();
     }
 
     @Get
     public List<FlightDto> get() {
         return flightsRepository.list();
     }
-
 }
