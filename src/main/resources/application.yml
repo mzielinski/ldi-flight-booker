@@ -35,3 +35,8 @@ netty:
 
 # validate | update | create | create-drop | none
 jpa.default.properties.hibernate.hbm2ddl.auto: create
+
+jackson:
+  deserialization:
+    failOnUnknownProperties: false
+  date-format: yyyy-MM-dd HH:mm:ss

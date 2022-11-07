@@ -1,6 +1,6 @@
 package com.maciezie.ldi.flights;
 
-import com.maciezie.ldi.flights.domain.FlightEntity;
+import com.maciezie.ldi.flights.domain.FlightDto;
 import com.maciezie.ldi.flights.domain.FlightsFaker;
 import com.maciezie.ldi.flights.persistence.FlightsRepository;
 import io.micronaut.http.annotation.Controller;
@@ -26,8 +26,8 @@ public class FlightsController {
     }
 
     @Get
-    public List<FlightEntity> get() {
-        return flightsRepository.findAll();
+    public List<FlightDto> get() {
+        return flightsRepository.list();
     }
 
 }
