@@ -29,6 +29,12 @@ public class FlightsFaker {
                 .forEach(index -> addNewFlight(
                         () -> FAKER.country().capital(),
                         () -> FAKER.country().capital()));
+
+        addNewFlight(() -> "Warsaw", () -> "Paris");
+        addNewFlight(() -> "Warsaw", () -> "Vienna");
+        addNewFlight(() -> "Warsaw", () -> "Miami");
+        addNewFlight(() -> "Warsaw", () -> "Miami");
+
         return (int) repository.count();
     }
 

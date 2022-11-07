@@ -11,4 +11,6 @@ import java.util.List;
 public interface FlightsRepository extends CrudRepository<FlightEntity, Integer> {
 
     List<FlightDto> list();
+
+    List<FlightDto> findAllByDepartureCityAndArrivalCity(String departure, String arrival);
 }

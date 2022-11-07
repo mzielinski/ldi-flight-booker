@@ -74,6 +74,32 @@ class FlightsControllerSpec extends Specification {
         null   | null | ''
     }
 
+    @Unroll
+    def 'should return flight(s) for departure #depature and arrival #arrival'() {
+        given:
+        List<Integer> expectedIds = repository.findAll()
+                .findAll { it.arrivalCity == arrival && it.departureCity == depature }
+                .collect { it.id }
+
+        when:
+        HttpResponse<List> response = client.toBlocking().exchange("/departure/$depature/arrival/$arrival", List)
+
+        then:
+        response.status() == HttpStatus.OK
+        response.body().size() == expectedIds.size()
+
+        and:
+        response.body().forEach {
+            assert expectedIds.contains(it['id'])
+            assert it['departureCity'] == depature
+            assert it['arrivalCity'] == arrival
+        }
+
+        where:
+        depature = 'Warsaw'
+        arrival = 'Miami'
+    }
+
     private ObjectMapper createObjectMapper() {
         ObjectMapper mapper = new ObjectMapper()
         mapper.findAndRegisterModules()

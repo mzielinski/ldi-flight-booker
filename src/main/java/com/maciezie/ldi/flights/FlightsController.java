@@ -4,6 +4,7 @@ import com.maciezie.ldi.flights.domain.FlightDto;
 import com.maciezie.ldi.flights.persistence.FlightsRepository;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
@@ -24,10 +25,19 @@ public class FlightsController {
     }
 
     @Get("{?max,offset}")
-    public List<FlightDto> get(@QueryValue Optional<Integer> max, @QueryValue Optional<Integer> offset) {
+    public List<FlightDto> getAllFlights(
+            @QueryValue Optional<Integer> max,
+            @QueryValue Optional<Integer> offset) {
         return flightsRepository.list().stream()
                 .skip(offset.orElse(0))
                 .limit(max.orElse(Integer.MAX_VALUE))
                 .toList();
+    }
+
+    @Get("/departure/{departure}/arrival/{arrival}")
+    public List<FlightDto> find(
+            @PathVariable String departure,
+            @PathVariable String arrival) {
+        return flightsRepository.findAllByDepartureCityAndArrivalCity(departure, arrival);
     }
 }
