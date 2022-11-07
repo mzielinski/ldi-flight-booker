@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 @Singleton
@@ -22,24 +23,27 @@ public class FlightsFaker {
         this.repository = repository;
     }
 
-    public void initializeWith(int size) {
+    public int initializeWith(int size) {
         repository.deleteAll();
         IntStream.range(0, size)
-                .forEach(index -> addNewFlight());
+                .forEach(index -> addNewFlight(
+                        () -> FAKER.country().capital(),
+                        () -> FAKER.country().capital()));
+        return (int) repository.count();
     }
 
-    private void addNewFlight() {
+    private void addNewFlight(Supplier<String> departureCityProducer, Supplier<String> arrivalCityProducer) {
         FlightEntity flight = new FlightEntity();
 
         // departure
-        String departureCity = FAKER.country().capital();
+        String departureCity = departureCityProducer.get();
         flight.setDepartureCity(departureCity);
         Instant departureDatetime = Instant.now()
                 .plus(FAKER.number().randomDigit(), ChronoUnit.HOURS);
         flight.setDepartureDatetime(departureDatetime);
 
         // arrival
-        flight.setArrivalCity(findArrivalCity(departureCity));
+        flight.setArrivalCity(findArrivalCity(departureCity, arrivalCityProducer));
         flight.setArrivalDatetime(departureDatetime
                 .plus(FAKER.number().randomDigit(), ChronoUnit.HOURS));
 
@@ -47,10 +51,10 @@ public class FlightsFaker {
         LOG.info(String.format("Adding %s to the storage", flight));
     }
 
-    private static String findArrivalCity(String departureCity) {
+    private static String findArrivalCity(String departureCity, Supplier<String> cityProducer) {
         String arrivalCity;
         do {
-            arrivalCity = FAKER.country().capital();
+            arrivalCity = cityProducer.get();
         } while (arrivalCity.equals(departureCity));
         return arrivalCity;
     }

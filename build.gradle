@@ -24,6 +24,7 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-jackson-databind")
     implementation("io.micronaut:micronaut-validation")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
     // jpa
     implementation('io.micronaut.data:micronaut-data-hibernate-jpa')
