@@ -2,13 +2,19 @@ micronaut:
   application:
     name: flights
   security:
+    enabled: true
     authentication: bearer
+    endpoints:
+      login:
+        enabled: true
     token:
       jwt:
-        signatures:
+        enabled: true
+        signature:
           secret:
             generator:
-              secret: ${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}
+              secret: change-it-and-has-to-have-proper-length
+              jws-algorithm: HS256
 
 datasources:
   default:
@@ -23,7 +29,9 @@ jpa:
   default:
     reactive: false
     entity-scan:
-      packages: com.maciezie.ldi.flights.domain
+      packages:
+        - com.maciezie.ldi.flights.domain
+        - com.maciezie.ldi.reservations.domain
     properties:
       hibernate:
         show_sql: false

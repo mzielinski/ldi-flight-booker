@@ -40,6 +40,10 @@ dependencies {
     // kafka
     implementation("io.micronaut.kafka:micronaut-kafka")
 
+    // reactive
+    implementation 'io.reactivex.rxjava3:rxjava'
+    implementation 'io.projectreactor:reactor-core'
+
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.postgresql:postgresql")
 

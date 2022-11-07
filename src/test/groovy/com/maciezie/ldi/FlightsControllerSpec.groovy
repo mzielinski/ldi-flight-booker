@@ -1,32 +1,21 @@
 package com.maciezie.ldi
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.maciezie.ldi.flights.domain.FlightDto
+import com.maciezie.ldi.flights.domain.FlightsDto
 import com.maciezie.ldi.flights.domain.FlightsFaker
 import com.maciezie.ldi.flights.persistence.FlightsRepository
+import com.maciezie.ldi.jwt.BaseAuthenticationSpec
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
-import io.micronaut.http.client.HttpClient
-import io.micronaut.http.client.annotation.Client
-import io.micronaut.runtime.EmbeddedApplication
-import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
-import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.text.SimpleDateFormat
+import static java.util.Optional.empty
+import static java.util.Optional.ofNullable
 
-@MicronautTest
-class FlightsControllerSpec extends Specification {
+class FlightsControllerSpec extends BaseAuthenticationSpec {
 
     static int NUMBER_OF_FLIGHTS
-
-    @Inject
-    @Client("/flights")
-    HttpClient client
-
-    @Inject
-    EmbeddedApplication<?> application
 
     @Inject
     FlightsFaker flightsFaker
@@ -44,11 +33,11 @@ class FlightsControllerSpec extends Specification {
 
     def 'should return list of all flights'() {
         when:
-        HttpResponse<List> response = client.toBlocking().exchange('', List)
+        HttpResponse<FlightsDto> response = jwtClient.flights(empty(), empty())
 
         then:
         response.status() == HttpStatus.OK
-        response.body().size() == NUMBER_OF_FLIGHTS
+        response.body().flights().size() == NUMBER_OF_FLIGHTS
     }
 
     @Unroll
@@ -60,18 +49,18 @@ class FlightsControllerSpec extends Specification {
                 .take(max ?: NUMBER_OF_FLIGHTS)
 
         when:
-        HttpResponse<String> response = client.toBlocking().exchange(path as String, String)
+        HttpResponse<FlightsDto> response = jwtClient.flights(ofNullable(offset), ofNullable(max))
 
         then:
         response.status == HttpStatus.OK
-        response.body.get() == createObjectMapper().writeValueAsString(expectedList)
+        response.body.get().flights() == expectedList
 
         where:
-        offset | max  | path
-        5      | null | "?offset=$offset"
-        null   | 5    | "?max=$max"
-        5      | 1    | "?offset=$offset&max=$max"
-        null   | null | ''
+        offset | max
+        5      | null
+        null   | 5
+        5      | 1
+        null   | null
     }
 
     @Unroll
@@ -82,28 +71,23 @@ class FlightsControllerSpec extends Specification {
                 .collect { it.id }
 
         when:
-        HttpResponse<List> response = client.toBlocking().exchange("/departure/$depature/arrival/$arrival", List)
+        HttpResponse<FlightsDto> response = jwtClient.flightsForSpecificDirection(depature, arrival)
 
         then:
         response.status() == HttpStatus.OK
-        response.body().size() == expectedIds.size()
 
         and:
-        response.body().forEach {
-            assert expectedIds.contains(it['id'])
-            assert it['departureCity'] == depature
-            assert it['arrivalCity'] == arrival
+        with(response.body().flights()) {
+            it.size() == expectedIds.size()
+            it.forEach {
+                assert expectedIds.contains(it['id'])
+                assert it['departureCity'] == depature
+                assert it['arrivalCity'] == arrival
+            }
         }
 
         where:
         depature = 'Warsaw'
         arrival = 'Miami'
-    }
-
-    private ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper()
-        mapper.findAndRegisterModules()
-        mapper.dateFormat = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')
-        mapper
     }
 }
