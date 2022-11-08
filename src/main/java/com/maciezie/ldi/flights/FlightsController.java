@@ -24,7 +24,7 @@ public class FlightsController {
     }
 
     @Get("{?offset,max}")
-    public FlightsDto getAllFlights(
+    public FlightsDto findFlights(
             @QueryValue Optional<Integer> offset,
             @QueryValue Optional<Integer> max) {
         return new FlightsDto(flightsRepository.list().stream()
@@ -34,7 +34,7 @@ public class FlightsController {
     }
 
     @Get("/departure/{departure}/arrival/{arrival}")
-    public FlightsDto find(
+    public FlightsDto findSpecificFlights(
             @PathVariable String departure,
             @PathVariable String arrival) {
         return new FlightsDto(flightsRepository.findAllByDepartureCityAndArrivalCity(departure, arrival));

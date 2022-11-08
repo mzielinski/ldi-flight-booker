@@ -1,5 +1,6 @@
 package com.maciezie.ldi.flights.domain;
 
+import com.maciezie.ldi.global.RestApiResponse;
 import io.micronaut.core.annotation.Introspected;
 
 import java.time.Instant;
@@ -10,5 +11,5 @@ public record FlightDto(
         String departureCity,
         Instant departureDatetime,
         String arrivalCity,
-        Instant arrivalDatetime) {
+        Instant arrivalDatetime) implements RestApiResponse {
 }

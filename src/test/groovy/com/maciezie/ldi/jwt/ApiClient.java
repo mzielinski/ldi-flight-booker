@@ -28,7 +28,7 @@ public interface ApiClient {
             @PathVariable String arrival);
 
     @Post("/reservations")
-    HttpResponse<ReservationDto> createRerservation(
+    HttpResponse<ReservationDto> createReservation(
             @Header(name = "Authorization") String authorization,
             @Body ReservationDto reservationDto);
 }

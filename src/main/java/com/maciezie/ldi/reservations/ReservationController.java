@@ -1,10 +1,13 @@
 package com.maciezie.ldi.reservations;
 
 import com.maciezie.ldi.flights.utils.FlightsFaker;
+import com.maciezie.ldi.global.CustomerError;
+import com.maciezie.ldi.global.RestApiResponse;
 import com.maciezie.ldi.reservations.domain.ReservationDto;
 import com.maciezie.ldi.reservations.domain.ReservationEntity;
 import com.maciezie.ldi.reservations.kafka.ReservationsNotifier;
 import com.maciezie.ldi.reservations.persistence.ReservationRepository;
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -33,11 +36,23 @@ public class ReservationController {
 
     @Status(CREATED)
     @Post
-    public void createReservation(@Body ReservationDto reservation) {
-        ReservationEntity entity = convertToEntity(reservation);
-        ReservationEntity response = repository.save(entity);
+    public HttpResponse<RestApiResponse> createReservation(@Body ReservationDto reservation) {
+        if (reservation.flightId() == null) {
+            return HttpResponse.badRequest()
+                    .body(new CustomerError("Fight identifier cannot be null"));
+        }
+
+        ReservationEntity response = repository.save(convertToEntity(reservation));
         notifier.send(response.getId(), reservation);
         LOG.info("Reservation {} successfully created and forwarded to external systems", response);
+
+        return HttpResponse
+                .created("/reservations/%s".formatted(response.getId()))
+                .body(new ReservationDto(
+                        response.getFlightId(),
+                        response.getFirstName(),
+                        response.getLastName(),
+                        response.getPassportNumber()));
     }
 
     private static ReservationEntity convertToEntity(ReservationDto reservation) {

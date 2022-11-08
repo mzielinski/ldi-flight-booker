@@ -7,11 +7,11 @@ import com.maciezie.ldi.flights.persistence.FlightsRepository
 import com.maciezie.ldi.flights.utils.FlightsFaker
 import com.maciezie.ldi.jwt.BaseAuthenticationSpec
 import io.micronaut.http.HttpResponse
-import io.micronaut.http.HttpStatus
 import jakarta.inject.Inject
 import spock.lang.Unroll
 
 import static com.maciezie.ldi.flights.utils.FlightsFaker.randomCity
+import static io.micronaut.http.HttpStatus.OK
 import static java.time.Instant.now
 import static java.time.temporal.ChronoField.NANO_OF_SECOND
 import static java.util.Optional.empty
@@ -43,7 +43,7 @@ class FlightsControllerSpec extends BaseAuthenticationSpec {
         HttpResponse<FlightsDto> response = jwtClient.flights(empty(), empty())
 
         then:
-        response.status() == HttpStatus.OK
+        response.status() == OK
         response.body().flights().size() == NUMBER_OF_FLIGHTS
     }
 
@@ -59,7 +59,7 @@ class FlightsControllerSpec extends BaseAuthenticationSpec {
         HttpResponse<FlightsDto> response = jwtClient.flights(ofNullable(offset), ofNullable(max))
 
         then:
-        response.status == HttpStatus.OK
+        response.status == OK
         response.body.get().flights() == expectedList
 
         where:
@@ -81,7 +81,7 @@ class FlightsControllerSpec extends BaseAuthenticationSpec {
         HttpResponse<FlightsDto> response = jwtClient.flightsForSpecificDirection(depature, arrival)
 
         then:
-        response.status() == HttpStatus.OK
+        response.status() == OK
 
         and:
         with(response.body().flights()) {
