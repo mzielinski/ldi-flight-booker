@@ -1,4 +1,4 @@
-package com.maciezie.ldi.reservations;
+package com.maciezie.ldi.reservations.kafka;
 
 import com.maciezie.ldi.reservations.domain.ReservationDto;
 import io.micronaut.configuration.kafka.annotation.KafkaClient;

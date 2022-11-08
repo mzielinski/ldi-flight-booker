@@ -1,6 +1,7 @@
-package com.maciezie.ldi.flights.domain;
+package com.maciezie.ldi.flights.utils;
 
 import com.github.javafaker.Faker;
+import com.maciezie.ldi.flights.domain.FlightEntity;
 import com.maciezie.ldi.flights.persistence.FlightsRepository;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
@@ -38,7 +39,19 @@ public class FlightsFaker {
         return (int) repository.count();
     }
 
+    public static FlightEntity createEntity() {
+        return createEntity(
+                () -> FAKER.country().capital(),
+                () -> FAKER.country().capital());
+    }
+
     private void addNewFlight(Supplier<String> departureCityProducer, Supplier<String> arrivalCityProducer) {
+        FlightEntity flight = createEntity(departureCityProducer, arrivalCityProducer);
+        repository.save(flight);
+        LOG.info(String.format("Adding %s to the storage", flight));
+    }
+
+    private static FlightEntity createEntity(Supplier<String> departureCityProducer, Supplier<String> arrivalCityProducer) {
         FlightEntity flight = new FlightEntity();
 
         // departure
@@ -52,9 +65,7 @@ public class FlightsFaker {
         flight.setArrivalCity(findArrivalCity(departureCity, arrivalCityProducer));
         flight.setArrivalDatetime(departureDatetime
                 .plus(FAKER.number().randomDigit(), ChronoUnit.HOURS));
-
-        repository.save(flight);
-        LOG.info(String.format("Adding %s to the storage", flight));
+        return flight;
     }
 
     private static String findArrivalCity(String departureCity, Supplier<String> cityProducer) {

@@ -1,8 +1,9 @@
 package com.maciezie.ldi.reservations;
 
-import com.maciezie.ldi.flights.domain.FlightsFaker;
+import com.maciezie.ldi.flights.utils.FlightsFaker;
 import com.maciezie.ldi.reservations.domain.ReservationDto;
 import com.maciezie.ldi.reservations.domain.ReservationEntity;
+import com.maciezie.ldi.reservations.kafka.ReservationsNotifier;
 import com.maciezie.ldi.reservations.persistence.ReservationRepository;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;

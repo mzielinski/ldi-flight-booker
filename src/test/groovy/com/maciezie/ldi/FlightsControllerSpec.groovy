@@ -2,8 +2,8 @@ package com.maciezie.ldi
 
 import com.maciezie.ldi.flights.domain.FlightDto
 import com.maciezie.ldi.flights.domain.FlightsDto
-import com.maciezie.ldi.flights.domain.FlightsFaker
 import com.maciezie.ldi.flights.persistence.FlightsRepository
+import com.maciezie.ldi.flights.utils.FlightsFaker
 import com.maciezie.ldi.jwt.BaseAuthenticationSpec
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus

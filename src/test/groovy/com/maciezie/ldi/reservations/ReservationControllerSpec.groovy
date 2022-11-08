@@ -8,7 +8,7 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException
 
 class ReservationControllerSpec extends BaseAuthenticationSpec {
 
-    ReservationDto reservation = new ReservationDto(1, 'Maciej', 'Zieliński', 'XXX')
+    ReservationDto reservation = new ReservationDto(1, 'Maciej', 'Zielinski', 'XXX')
 
     def setup() {
         println "token: $token"
