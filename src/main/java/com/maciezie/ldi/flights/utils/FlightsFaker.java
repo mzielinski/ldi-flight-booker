@@ -39,6 +39,10 @@ public class FlightsFaker {
         return (int) repository.count();
     }
 
+    public static String randomCity() {
+        return FAKER.country().capital();
+    }
+
     public static FlightEntity createEntity() {
         return createEntity(
                 () -> FAKER.country().capital(),

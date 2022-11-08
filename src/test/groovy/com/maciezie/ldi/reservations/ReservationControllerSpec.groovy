@@ -5,10 +5,14 @@ import com.maciezie.ldi.reservations.domain.ReservationDto
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.exceptions.HttpClientResponseException
+import jakarta.inject.Inject
 
 class ReservationControllerSpec extends BaseAuthenticationSpec {
 
     ReservationDto reservation = new ReservationDto(1, 'Maciej', 'Zielinski', 'XXX')
+
+    @Inject
+    ReservationNotificationsObserver notificationsObserver
 
     def setup() {
         println "token: $token"
@@ -20,6 +24,11 @@ class ReservationControllerSpec extends BaseAuthenticationSpec {
 
         then:
         response.status() == HttpStatus.CREATED
+
+        and:
+        conditions.eventually {
+            assert notificationsObserver.reservations.contains(reservation)
+        }
     }
 
     def 'should reject request when token is invalid'() {

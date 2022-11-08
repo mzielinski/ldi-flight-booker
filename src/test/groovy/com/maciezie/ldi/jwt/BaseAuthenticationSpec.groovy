@@ -7,6 +7,7 @@ import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
 import static io.micronaut.http.HttpHeaderValues.AUTHORIZATION_PREFIX_BEARER
 
@@ -21,6 +22,8 @@ abstract class BaseAuthenticationSpec extends Specification {
     ApiClient jwtClient
 
     String token
+
+    PollingConditions conditions = new PollingConditions()
 
     def setup() {
         UsernamePasswordCredentials credentials = new UsernamePasswordCredentials('my-user', 'my-password')
