@@ -1,10 +1,10 @@
 POST http://127.0.0.1:8080/reservations
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJub25lIn0.eyJzdWIiOiJteS11c2VyIiwibmJmIjoxNjY3ODU2NTc3LCJyb2xlcyI6W10sImlzcyI6ImZsaWdodHMiLCJleHAiOjE2Njc4NjAxNzcsImlhdCI6MTY2Nzg1NjU3N30.
+Authorization: Bearer eyJhbGciOiJub25lIn0.eyJzdWIiOiJteS11c2VyIiwibmJmIjoxNjY3OTAwODg5LCJyb2xlcyI6W10sImlzcyI6ImZsaWdodHMiLCJleHAiOjE2Njc5MDQ0ODksImlhdCI6MTY2NzkwMDg4OX0.
 
 {
   "flightId": 1,
   "firstName": "Maciej",
-  "lastName": "Zieliński",
+  "lastName": "Zielinski",
   "passportNumber": "XXX"
 }

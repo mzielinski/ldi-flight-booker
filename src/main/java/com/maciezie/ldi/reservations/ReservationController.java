@@ -23,20 +23,28 @@ public class ReservationController {
     private static final Logger LOG = LoggerFactory.getLogger(FlightsFaker.class);
 
     private final ReservationRepository repository;
+    private final ReservationsNotifier notifier;
 
-    public ReservationController(ReservationRepository repository) {
+    public ReservationController(ReservationRepository repository, ReservationsNotifier notifier) {
         this.repository = repository;
+        this.notifier = notifier;
     }
 
     @Status(CREATED)
     @Post
     public void createReservation(@Body ReservationDto reservation) {
+        ReservationEntity entity = convertToEntity(reservation);
+        ReservationEntity response = repository.save(entity);
+        notifier.send(response.getId(), reservation);
+        LOG.info("Reservation {} successfully created and forwarded to external systems", response);
+    }
+
+    private static ReservationEntity convertToEntity(ReservationDto reservation) {
         ReservationEntity entity = new ReservationEntity();
         entity.setFlightId(reservation.flightId());
         entity.setFirstName(reservation.firstName());
         entity.setLastName(reservation.lastName());
         entity.setPassportNumber(reservation.passportNumber());
-        ReservationEntity response = repository.save(entity);
-        LOG.info("Reservation {} successfully created", response);
+        return entity;
     }
 }

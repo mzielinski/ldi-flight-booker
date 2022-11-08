@@ -10,6 +10,10 @@ class ReservationControllerSpec extends BaseAuthenticationSpec {
 
     ReservationDto reservation = new ReservationDto(1, 'Maciej', 'Zieliński', 'XXX')
 
+    def setup() {
+        println "token: $token"
+    }
+
     def 'should successfully create reservation'() {
         when:
         HttpResponse<ReservationDto> response = jwtClient.createRerservation(token, reservation)

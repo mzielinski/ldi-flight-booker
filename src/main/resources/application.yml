@@ -48,3 +48,7 @@ jackson:
   deserialization:
     failOnUnknownProperties: false
   date-format: yyyy-MM-dd HH:mm:ss
+
+kafka:
+  bootstrap:
+    servers: localhost:9092
