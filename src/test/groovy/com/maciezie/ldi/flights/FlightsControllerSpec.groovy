@@ -10,7 +10,7 @@ import io.micronaut.http.HttpResponse
 import jakarta.inject.Inject
 import spock.lang.Unroll
 
-import static com.maciezie.ldi.flights.utils.FlightsFaker.randomCity
+import static com.maciezie.ldi.flights.utils.FlightsFaker.createCapitolName
 import static io.micronaut.http.HttpStatus.OK
 import static java.time.Instant.now
 import static java.time.temporal.ChronoField.NANO_OF_SECOND
@@ -118,9 +118,9 @@ class FlightsControllerSpec extends BaseAuthenticationSpec {
         }
 
         where:
-        depature = randomCity()
+        depature = createCapitolName()
         depatureDatetime = now().with(NANO_OF_SECOND, 0L)
-        arrival = randomCity()
+        arrival = createCapitolName()
         arrivalDatetime = now().with(NANO_OF_SECOND, 0L)
     }
 }

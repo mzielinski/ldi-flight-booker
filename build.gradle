@@ -13,7 +13,9 @@ repositories {
 }
 
 dependencies {
+
     annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut:micronaut-graal")
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
 
@@ -34,9 +36,6 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
 
-    // flyway
-    implementation("io.micronaut.flyway:micronaut-flyway")
-
     // kafka
     implementation("io.micronaut.kafka:micronaut-kafka")
 
@@ -44,19 +43,33 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava'
     implementation 'io.projectreactor:reactor-core'
 
+    // logger
     runtimeOnly("ch.qos.logback:logback-classic")
+
+    // database
     runtimeOnly("org.postgresql:postgresql")
 
+    // lombok
     compileOnly("org.projectlombok:lombok")
 
     // data faker
     implementation 'com.github.javafaker:javafaker:1.0.2'
 }
 
+// ./gradlew dockerBuildNative
+graalvmNative {
+    binaries {
+        main {
+            imageName.set('mn-graalvm-application')
+            buildArgs.add('--verbose')
+        }
+    }
+}
 
 application {
     mainClass.set("com.maciezie.ldi.Application")
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
     targetCompatibility = JavaVersion.toVersion("17")

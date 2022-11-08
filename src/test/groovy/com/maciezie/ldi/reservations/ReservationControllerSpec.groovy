@@ -1,5 +1,6 @@
 package com.maciezie.ldi.reservations
 
+import com.github.javafaker.Faker
 import com.maciezie.ldi.global.RestApiResponse
 import com.maciezie.ldi.jwt.BaseAuthenticationSpec
 import com.maciezie.ldi.reservations.domain.ReservationDto
@@ -12,7 +13,11 @@ import static io.micronaut.http.HttpStatus.CREATED
 
 class ReservationControllerSpec extends BaseAuthenticationSpec {
 
-    ReservationDto reservation = new ReservationDto(1, 'Maciej', 'Zielinski', 'XXX')
+    ReservationDto reservation = new ReservationDto(
+            Faker.instance().number().randomDigit(),
+            Faker.instance().name().firstName(),
+            Faker.instance().name().lastName(),
+            Faker.instance().idNumber().valid())
 
     @Inject
     ReservationNotificationsObserver notificationsObserver

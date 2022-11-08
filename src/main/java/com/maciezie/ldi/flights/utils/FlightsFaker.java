@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
@@ -28,8 +29,8 @@ public class FlightsFaker {
         repository.deleteAll();
         IntStream.range(0, size)
                 .forEach(index -> addNewFlight(
-                        () -> FAKER.country().capital(),
-                        () -> FAKER.country().capital()));
+                        FlightsFaker::createCapitolName,
+                        FlightsFaker::createCapitolName));
 
         addNewFlight(() -> "Warsaw", () -> "Paris");
         addNewFlight(() -> "Warsaw", () -> "Vienna");
@@ -39,14 +40,17 @@ public class FlightsFaker {
         return (int) repository.count();
     }
 
-    public static String randomCity() {
-        return FAKER.country().capital();
+    public static String createCapitolName() {
+        try {
+            return FAKER.country().capital();
+        } catch (Exception e) {
+            // XXX: does not work in native-image, returns null result ???
+            return String.valueOf(ThreadLocalRandom.current().nextInt(100000, 999999));
+        }
     }
 
     public static FlightEntity createEntity() {
-        return createEntity(
-                () -> FAKER.country().capital(),
-                () -> FAKER.country().capital());
+        return createEntity(FlightsFaker::createCapitolName, FlightsFaker::createCapitolName);
     }
 
     private void addNewFlight(Supplier<String> departureCityProducer, Supplier<String> arrivalCityProducer) {

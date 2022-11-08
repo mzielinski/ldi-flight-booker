@@ -1,7 +1,7 @@
 package com.maciezie.ldi.reservations;
 
 import com.maciezie.ldi.flights.utils.FlightsFaker;
-import com.maciezie.ldi.global.CustomerError;
+import com.maciezie.ldi.global.CustomerErrorDto;
 import com.maciezie.ldi.global.RestApiResponse;
 import com.maciezie.ldi.reservations.domain.ReservationDto;
 import com.maciezie.ldi.reservations.domain.ReservationEntity;
@@ -39,7 +39,7 @@ public class ReservationController {
     public HttpResponse<RestApiResponse> createReservation(@Body ReservationDto reservation) {
         if (reservation.flightId() == null) {
             return HttpResponse.badRequest()
-                    .body(new CustomerError("Fight identifier cannot be null"));
+                    .body(new CustomerErrorDto("Fight identifier cannot be null"));
         }
 
         ReservationEntity response = repository.save(convertToEntity(reservation));

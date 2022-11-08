@@ -1,6 +1,6 @@
 POST http://127.0.0.1:8080/reservations
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJub25lIn0.eyJzdWIiOiJteS11c2VyIiwibmJmIjoxNjY3OTA4OTQ3LCJyb2xlcyI6W10sImlzcyI6ImZsaWdodHMiLCJleHAiOjE2Njc5MTI1NDcsImlhdCI6MTY2NzkwODk0N30.
+Authorization: Bearer eyJhbGciOiJub25lIn0.eyJzdWIiOiJteS11c2VyIiwibmJmIjoxNjY3OTQwMzA5LCJyb2xlcyI6W10sImlzcyI6ImZsaWdodHMiLCJleHAiOjE2Njc5NDM5MDksImlhdCI6MTY2Nzk0MDMwOX0.
 
 {
   "flightId": 3,

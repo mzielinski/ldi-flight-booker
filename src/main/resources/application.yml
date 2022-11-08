@@ -51,4 +51,4 @@ jackson:
 
 kafka:
   bootstrap:
-    servers: localhost:9092
+    servers: ${KAFKA_URL:`localhost:9092`}

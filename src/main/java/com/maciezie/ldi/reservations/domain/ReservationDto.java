@@ -1,7 +1,9 @@
 package com.maciezie.ldi.reservations.domain;
 
 import com.maciezie.ldi.global.RestApiResponse;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
 public record ReservationDto(
         Integer flightId,
         String firstName,
