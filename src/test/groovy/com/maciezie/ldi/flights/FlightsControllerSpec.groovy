@@ -13,7 +13,6 @@ import spock.lang.Unroll
 import static com.maciezie.ldi.flights.utils.FlightsFaker.createCapitolName
 import static io.micronaut.http.HttpStatus.OK
 import static java.time.Instant.now
-import static java.time.temporal.ChronoField.NANO_OF_SECOND
 import static java.util.Optional.empty
 import static java.util.Optional.ofNullable
 
@@ -102,7 +101,7 @@ class FlightsControllerSpec extends BaseAuthenticationSpec {
         when:
         notifier.send(
                 UUID.randomUUID(),
-                new FlightDto(null, depature, depatureDatetime, arrival, arrivalDatetime))
+                new FlightDto(null, depature, now(), arrival, now()))
 
         then:
         conditions.eventually {
@@ -111,16 +110,12 @@ class FlightsControllerSpec extends BaseAuthenticationSpec {
                 it.size() == 1
                 assert it[0].id() != null
                 assert it[0].departureCity() == depature
-                assert it[0].departureDatetime() == depatureDatetime
                 assert it[0].arrivalCity() == arrival
-                assert it[0].arrivalDatetime() == arrivalDatetime
             }
         }
 
         where:
         depature = createCapitolName()
-        depatureDatetime = now().with(NANO_OF_SECOND, 0L)
         arrival = createCapitolName()
-        arrivalDatetime = now().with(NANO_OF_SECOND, 0L)
     }
 }

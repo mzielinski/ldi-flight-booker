@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
@@ -41,12 +40,7 @@ public class FlightsFaker {
     }
 
     public static String createCapitolName() {
-        try {
-            return FAKER.country().capital();
-        } catch (Exception e) {
-            // XXX: does not work in native-image, returns null result ???
-            return String.valueOf(ThreadLocalRandom.current().nextInt(100000, 999999));
-        }
+        return FAKER.country().capital();
     }
 
     public static FlightEntity createEntity() {
