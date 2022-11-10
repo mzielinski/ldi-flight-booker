@@ -1,0 +1,37 @@
+@startuml
+
+title "Flights"
+
+actor "Browser" as browser
+queue "Kafka\nflight-uploader" as kafka
+participant "Flight-Booker" as app
+database "PostgreSQL" as db
+
+== Flights Uploader ==
+
+kafka --> app: processing incoming message
+activate app
+app --> db: store incoming flight
+note right
+  Database table: flights
+end note
+activate db
+db --> app
+deactivate db
+deactivate app
+
+== Flights Retriever ==
+
+browser --> app: **GET** http://localhost:8080/flights
+activate app
+app --> db: find flights
+activate db
+note right
+  Database table: flights
+end note
+db --> app
+deactivate db
+app --> browser: **200:** List of flights
+deactivate app
+
+@enduml

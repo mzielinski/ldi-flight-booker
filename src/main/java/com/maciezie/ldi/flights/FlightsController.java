@@ -33,10 +33,14 @@ public class FlightsController {
                 .toList());
     }
 
+    // 1. TODO: Add method to find all flights from specific departure (but without arrival city)
+
     @Get("/departure/{departure}/arrival/{arrival}")
     public FlightsDto findSpecificFlights(
             @PathVariable String departure,
             @PathVariable String arrival) {
         return new FlightsDto(flightsRepository.findAllByDepartureCityAndArrivalCity(departure, arrival));
     }
+
+    // 3. TODO: Create method to create flight via REST API
 }

@@ -55,6 +55,10 @@ public class ReservationController {
                         response.getPassportNumber()));
     }
 
+    // 2. TODO: Allow to modify and delete existing reservations
+
+    // 4. TODO: List all user data connected with specific flight
+
     private static ReservationEntity convertToEntity(ReservationDto reservation) {
         ReservationEntity entity = new ReservationEntity();
         entity.setFlightId(reservation.flightId());

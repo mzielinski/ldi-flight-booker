@@ -1,4 +1,4 @@
-package com.maciezie.ldi.jwt;
+package com.maciezie.ldi.global;
 
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.*;

@@ -1,0 +1,51 @@
+@startuml
+
+title "Reservations"
+
+actor "Browser" as browser
+participant "Flight-Booker" as app
+database "PostgreSQL" as db
+queue "Kafka\nreservation-notifications" as kafka
+
+== Authorization ==
+
+browser --> app: **POST:** http://localhost:8080/login
+activate app
+note right
+  Auth required
+end note
+app --> browser: **200:** Java Web Token ...
+
+== Authorized Reservation Request ==
+
+browser --> app: **POST:** http://localhost:8080/reservations
+note right
+  Valid HTTP header
+  "Authorization: Bearer ..."
+end note
+app --> db: Store reservation
+note right
+  Database table: reservations
+end note
+activate db
+db --> app
+deactivate db
+app --> kafka: Publish Notification to Kafka Cluster
+activate kafka
+kafka --> app
+deactivate kafka
+app --> browser: **201:** Created
+deactivate app
+
+== Unauthorized Reservation Request ==
+
+browser --> app: **POST:** http://localhost:8080/reservations
+activate app
+app --> browser: **401:** Unauthorized
+note right
+  Invalid or missing HTTP header
+  "Authorization: Bearer ..."
+end note
+deactivate app
+
+@enduml

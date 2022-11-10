@@ -1,3 +1,8 @@
+##
+
+Homework:
+* Change REST API to use Project Reactor or RxJava 3
+
 ## Micronaut 3.7.3 Documentation
 
 - [User Guide](https://docs.micronaut.io/3.7.3/guide/index.html)

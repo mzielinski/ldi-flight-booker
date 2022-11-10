@@ -9,6 +9,10 @@
         </encoder>
     </appender>
 
+    <logger name="io.micronaut.http.client.netty.DefaultHttpClient" additivity="false" level="TRACE">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
     <logger name="org.apache.kafka" level="WARN"/>
 
     <root level="INFO">
