@@ -1,5 +1,6 @@
 package com.maciezie.ldi.flights;
 
+import com.maciezie.ldi.flights.domain.FlightDto;
 import com.maciezie.ldi.flights.domain.FlightsDto;
 import com.maciezie.ldi.flights.persistence.FlightsRepository;
 import io.micronaut.http.annotation.Controller;
@@ -8,7 +9,9 @@ import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.Optional;
 
 import static io.micronaut.http.MediaType.APPLICATION_JSON;
@@ -23,13 +26,36 @@ public class FlightsController {
         this.flightsRepository = flightsRepository;
     }
 
-    @Get("{?offset,max}")
+    @Get("/reactive{?offset,max,wait}")
+    public Flux<FlightDto> findFlightsUsingReactor(
+            @QueryValue Optional<Integer> offset,
+            @QueryValue Optional<Integer> max,
+            @QueryValue Optional<Duration> wait) {
+        return flightsRepository.list()
+                .skip(offset.orElse(0))
+                .take(max.orElse(Integer.MAX_VALUE))
+                .map(entity -> {
+                    blockFor(wait.orElse(Duration.ZERO));
+                    return entity;
+                });
+    }
+
+    @Get("{?offset,max,wait}")
     public FlightsDto findFlights(
             @QueryValue Optional<Integer> offset,
-            @QueryValue Optional<Integer> max) {
-        return new FlightsDto(flightsRepository.list().stream()
+            @QueryValue Optional<Integer> max,
+            @QueryValue Optional<Duration> wait) {
+        return new FlightsDto(flightsRepository.findAll().stream()
                 .skip(offset.orElse(0))
                 .limit(max.orElse(Integer.MAX_VALUE))
+                .map(entity -> new FlightDto(
+                        entity.getId(),
+                        entity.getDepartureCity(),
+                        entity.getDepartureDatetime(),
+                        entity.getArrivalCity(),
+                        entity.getArrivalDatetime()
+                ))
+                .peek(entity -> blockFor(wait.orElse(Duration.ZERO)))
                 .toList());
     }
 
@@ -43,4 +69,12 @@ public class FlightsController {
     }
 
     // 3. TODO: Create method to create flight via REST API
+
+    private static void blockFor(Duration duration) {
+        try {
+            Thread.sleep(duration.toMillis());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

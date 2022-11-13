@@ -1,0 +1,1 @@
+GET http://127.0.0.1:8080/flights/reactive?offset=0&max=2

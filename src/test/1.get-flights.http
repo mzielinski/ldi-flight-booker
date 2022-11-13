@@ -1,1 +1,1 @@
-GET http://127.0.0.1:8080/flights
+GET http://127.0.0.1:8080/flights?offset=0&max=5
