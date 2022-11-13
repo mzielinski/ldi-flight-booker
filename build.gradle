@@ -18,6 +18,8 @@ dependencies {
     annotationProcessor("io.micronaut:micronaut-graal")
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+
 
     // core
     implementation("jakarta.annotation:jakarta.annotation-api")
@@ -51,6 +53,9 @@ dependencies {
 
     // lombok
     compileOnly("org.projectlombok:lombok")
+
+    // open-api
+    implementation("io.swagger.core.v3:swagger-annotations")
 
     // data faker
     implementation 'com.github.javafaker:javafaker:1.0.2'
