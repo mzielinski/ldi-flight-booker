@@ -67,6 +67,7 @@ public class FlightsFaker {
         flight.setArrivalCity(findArrivalCity(departureCity, arrivalCityProducer));
         flight.setArrivalDatetime(departureDatetime
                 .plus(FAKER.number().randomDigit(), ChronoUnit.HOURS));
+
         return flight;
     }
 

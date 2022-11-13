@@ -1,6 +1,7 @@
 package com.maciezie.ldi.flights;
 
 import com.maciezie.ldi.flights.domain.FlightDto;
+import com.maciezie.ldi.flights.domain.FlightEntity;
 import com.maciezie.ldi.flights.domain.FlightsDto;
 import com.maciezie.ldi.flights.persistence.FlightsRepository;
 import io.micronaut.http.annotation.Controller;
@@ -48,13 +49,7 @@ public class FlightsController {
         return new FlightsDto(flightsRepository.findAll().stream()
                 .skip(offset.orElse(0))
                 .limit(max.orElse(Integer.MAX_VALUE))
-                .map(entity -> new FlightDto(
-                        entity.getId(),
-                        entity.getDepartureCity(),
-                        entity.getDepartureDatetime(),
-                        entity.getArrivalCity(),
-                        entity.getArrivalDatetime()
-                ))
+                .map(FlightEntity::convert)
                 .peek(entity -> blockFor(wait.orElse(Duration.ZERO)))
                 .toList());
     }

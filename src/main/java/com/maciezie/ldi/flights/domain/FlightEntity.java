@@ -26,4 +26,14 @@ public class FlightEntity {
     @Column(name = "arrival_datatime")
     private Instant arrivalDatetime;
 
+    @Transient
+    public FlightDto convert() {
+        return new FlightDto(
+                getId(),
+                getDepartureCity(),
+                getDepartureDatetime(),
+                getArrivalCity(),
+                getArrivalDatetime()
+        );
+    }
 }
