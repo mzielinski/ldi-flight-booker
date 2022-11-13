@@ -1,9 +1,9 @@
 package com.maciezie.ldi.flights;
 
 import com.maciezie.ldi.flights.domain.FlightDto;
-import com.maciezie.ldi.flights.domain.FlightEntity;
 import com.maciezie.ldi.flights.domain.FlightsDto;
 import com.maciezie.ldi.flights.persistence.FlightsRepository;
+import com.maciezie.ldi.flights.persistence.ReactiveFlightsRepository;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
@@ -22,9 +22,11 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON;
 public class FlightsController {
 
     private final FlightsRepository flightsRepository;
+    private final ReactiveFlightsRepository reactiveFlightsRepository;
 
-    public FlightsController(FlightsRepository flightsRepository) {
+    public FlightsController(FlightsRepository flightsRepository, ReactiveFlightsRepository reactiveFlightsRepository) {
         this.flightsRepository = flightsRepository;
+        this.reactiveFlightsRepository = reactiveFlightsRepository;
     }
 
     @Get("/reactive{?offset,max,wait}")
@@ -32,7 +34,7 @@ public class FlightsController {
             @QueryValue Optional<Integer> offset,
             @QueryValue Optional<Integer> max,
             @QueryValue Optional<Duration> wait) {
-        return flightsRepository.list()
+        return reactiveFlightsRepository.list()
                 .skip(offset.orElse(0))
                 .take(max.orElse(Integer.MAX_VALUE))
                 .map(entity -> {
@@ -46,10 +48,9 @@ public class FlightsController {
             @QueryValue Optional<Integer> offset,
             @QueryValue Optional<Integer> max,
             @QueryValue Optional<Duration> wait) {
-        return new FlightsDto(flightsRepository.findAll().stream()
+        return new FlightsDto(flightsRepository.list().stream()
                 .skip(offset.orElse(0))
                 .limit(max.orElse(Integer.MAX_VALUE))
-                .map(FlightEntity::convert)
                 .peek(entity -> blockFor(wait.orElse(Duration.ZERO)))
                 .toList());
     }

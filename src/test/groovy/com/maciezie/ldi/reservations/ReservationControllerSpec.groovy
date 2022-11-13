@@ -4,10 +4,14 @@ import com.github.javafaker.Faker
 import com.maciezie.ldi.global.RestApiResponse
 import com.maciezie.ldi.jwt.BaseAuthenticationSpec
 import com.maciezie.ldi.reservations.domain.ReservationDto
+import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import jakarta.inject.Inject
 
+import static io.micronaut.http.HttpRequest.POST
 import static io.micronaut.http.HttpStatus.BAD_REQUEST
 import static io.micronaut.http.HttpStatus.CREATED
 
@@ -21,6 +25,10 @@ class ReservationControllerSpec extends BaseAuthenticationSpec {
 
     @Inject
     ReservationNotificationsObserver notificationsObserver
+
+    @Inject
+    @Client("/")
+    HttpClient httpClient
 
     def setup() {
         println "token: $token"
@@ -40,8 +48,12 @@ class ReservationControllerSpec extends BaseAuthenticationSpec {
     }
 
     def 'should reject request when token is invalid'() {
+        given:
+        HttpRequest<ReservationDto> request = POST('/reservations', reservation)
+                .header('Authorization', 'invalid-token')
+
         when:
-        jwtClient.createReservation('invalid-token', reservation)
+        httpClient.toBlocking().exchange(request)
 
         then:
         HttpClientResponseException e = thrown(HttpClientResponseException)
@@ -49,8 +61,12 @@ class ReservationControllerSpec extends BaseAuthenticationSpec {
     }
 
     def 'should return proper error message when request is not valid'() {
+        given:
+        HttpRequest<ReservationDto> request = POST('/reservations', reservation.withFlightId(null))
+                .header('Authorization', token)
+
         when:
-        jwtClient.createReservation(token, reservation.withFlightId(null))
+        httpClient.toBlocking().exchange(request)
 
         then:
         HttpClientResponseException e = thrown(HttpClientResponseException)

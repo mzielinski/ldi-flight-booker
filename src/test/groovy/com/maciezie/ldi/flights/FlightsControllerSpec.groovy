@@ -10,6 +10,9 @@ import io.micronaut.http.HttpResponse
 import jakarta.inject.Inject
 import spock.lang.Unroll
 
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+
 import static com.maciezie.ldi.flights.utils.FlightsFaker.createCapitolName
 import static io.micronaut.http.HttpStatus.OK
 import static java.time.Instant.now
@@ -117,5 +120,25 @@ class FlightsControllerSpec extends BaseAuthenticationSpec {
         where:
         depature = createCapitolName()
         arrival = createCapitolName()
+    }
+
+    def 'should return flight using non-blocking api'() {
+        given:
+        CountDownLatch latch = new CountDownLatch(1)
+        FlightDto flight = null
+
+        when:
+        jwtClient.flightsWithNonBlockingApi(empty(), empty())
+                .subscribe(result -> {
+                    flight = result
+                }, error -> {
+                    throw new RuntimeException(error)
+                }, latch.countDown())
+
+        then:
+        latch.await(10, TimeUnit.SECONDS)
+        conditions.eventually {
+            assert flight != null
+        }
     }
 }
