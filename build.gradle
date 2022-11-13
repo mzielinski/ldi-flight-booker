@@ -14,15 +14,9 @@ repositories {
 
 dependencies {
 
-    annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor("io.micronaut:micronaut-graal")
-    annotationProcessor("io.micronaut:micronaut-http-validation")
-    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
-    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
-
-
     // core
     implementation("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
 
     // http
     implementation("io.micronaut:micronaut-http-client")
@@ -37,6 +31,7 @@ dependencies {
     // security
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
 
     // kafka
     implementation("io.micronaut.kafka:micronaut-kafka")
@@ -53,9 +48,14 @@ dependencies {
 
     // lombok
     compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 
     // open-api
     implementation("io.swagger.core.v3:swagger-annotations")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi:4.6.0")
+
+    // graalvm
+    annotationProcessor("io.micronaut:micronaut-graal")
 
     // data faker
     implementation 'com.github.javafaker:javafaker:1.0.2'
