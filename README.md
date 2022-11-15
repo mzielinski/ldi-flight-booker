@@ -6,7 +6,7 @@ mail: zielinskimaciej at yahoo.com
 
 ## Presentation
 
-https://prezi.com/i/edit/xzhyrnr7hct9/
+https://prezi.com/i/xzhyrnr7hct9/
 
 ## How to build application
 
