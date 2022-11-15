@@ -1,5 +1,13 @@
 # Workshops ŁDI, 2022
 
+## Contact to me
+
+mail: zielinskimaciej at yahoo.com
+
+## Presentation
+
+https://prezi.com/i/edit/xzhyrnr7hct9/
+
 ## How to build application
 
 `./gradle clean build`
