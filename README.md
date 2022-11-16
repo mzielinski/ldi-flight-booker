@@ -4,25 +4,17 @@
 
 mail: zielinskimaciej at yahoo.com
 
-## Application Diagrams:
-
-### Components
-
-![alt text](docs/integration-with-components.png "Components")
-
-### Flights
-
-![alt text](docs/sequence-diagram-flight-uload-Flights.png "Flights")
-
-### Reservations
-
-![alt text](docs/sequence-diagram-reservation-Reservations.png "Reservations")
-
 ## Presentation:
 
 https://prezi.com/i/xzhyrnr7hct9/
 
 ## How to build application:
+
+**Note**
+
+> Currently, tests requires up & running PostgreSQL and Kafka (docker compose files).
+> It is shortcut for demo purposes, but in regular project we would start such components dynamically during tests
+> executions (for example using TestContainers or database in memory)
 
 `./gradle clean build`
 
@@ -65,6 +57,21 @@ http://localhost:3030/kafka-topics-ui/
 
 `docker stack rm docker`
 
+## Application Diagrams:
+
+### Components
+
+![alt text](docs/integration-with-components.png "Components")
+
+### Flights
+
+![alt text](docs/sequence-diagram-flight-uload-Flights.png "Flights")
+
+### Reservations
+
+![alt text](docs/sequence-diagram-reservation-Reservations.png "Reservations")
+
+
 ## Micronaut 3.7.3 Documentation:
 
 I recommend Micronaut documentation. It is brilliant.
@@ -73,3 +80,4 @@ I recommend Micronaut documentation. It is brilliant.
 - [API Reference](https://docs.micronaut.io/3.7.3/api/index.html)
 - [Configuration Reference](https://docs.micronaut.io/3.7.3/guide/configurationreference.html)
 - [Micronaut Guides](https://guides.micronaut.io/index.html)
+- [Deploy a Serverless Micronaut function to AWS Lambda Java 11 Runtime](https://guides.micronaut.io/latest/mn-serverless-function-aws-lambda-gradle-java.html)
