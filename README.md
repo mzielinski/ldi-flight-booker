@@ -35,7 +35,7 @@ http://localhost:3030/kafka-topics-ui/
 #### Db Adminer:
 
 * URL: http://localhost:8081/
-* Connection Host (docker host on linux): 172.17.0.1
+* Connection Host: db
 * User: postgres
 * Password: secret
 
